@@ -53,18 +53,39 @@
         <button class="button hidden" onclick="redirectToResults()">Ver Resultados</button>
     </div>
 
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.10.0/firebase-database.js"></script>
     <script>
-        let players = JSON.parse(localStorage.getItem('players')) || [];
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAwrGxfI2igV5Wn_YXqSX3XjVbXrDwl0mU",
+            authDomain: "juegotriviaarras.firebaseapp.com",
+            projectId: "juegotriviaarras",
+            storageBucket: "juegotriviaarras.appspot.com",
+            messagingSenderId: "438700891035",
+            appId: "1:438700891035:web:7fafec8fef7a8549171f3e",
+            measurementId: "G-ZZL5H3YEBH"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        let players = [];
         let currentQuestion = 0;
 
         function startGame() {
             const playerName = document.getElementById('playerName').value;
             if (playerName) {
-                players.push({ name: playerName, score: 0 });
-                localStorage.setItem('players', JSON.stringify(players));
-                document.getElementById('registration').classList.add('hidden');
-                document.getElementById('questions').classList.remove('hidden');
-                document.querySelector('.button[onclick="nextQuestion()"]').classList.remove('hidden');
+                firebase.database().ref('players').once('value', (snapshot) => {
+                    players = snapshot.val() || [];
+                    players.push({ name: playerName, score: 0 });
+                    firebase.database().ref('players').set(players);
+                    document.getElementById('registration').classList.add('hidden');
+                    document.getElementById('questions').classList.remove('hidden');
+                    document.querySelector('.button[onclick="nextQuestion()"]').classList.remove('hidden');
+                });
             } else {
                 alert('Por favor ingresa tu nombre.');
             }
@@ -91,12 +112,12 @@
                     players[players.length - 1].score++;
                 }
             }
-            localStorage.setItem('players', JSON.stringify(players));
+            firebase.database().ref('players').set(players);
         }
 
         function redirectToResults() {
             calculateScores();
-            window.location.href = "resultados.html"; // Aquí puedes agregar la dirección de la página de resultados
+            window.location.href = "resultados.html";
         }
     </script>
 </body>
