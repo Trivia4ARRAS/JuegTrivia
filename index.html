@@ -106,17 +106,13 @@
 
         function calculateScores() {
             const answers = ['Noé', 'Samuel', 'Convertir el agua en vino'];
-            firebase.database().ref('players').once('value', (snapshot) => {
-                players = snapshot.val() || [];
-                const player = players.find(p => p.name === document.getElementById('playerName').value);
-                for (let i = 0; i < answers.length; i++) {
-                    const selected = document.querySelector(`input[name="q${i + 1}"]:checked`);
-                    if (selected && selected.value === answers[i]) {
-                        player.score++;
-                    }
+            for (let i = 0; i < answers.length; i++) {
+                const selected = document.querySelector(`input[name="q${i + 1}"]:checked`);
+                if (selected && selected.value === answers[i]) {
+                    players[players.length - 1].score++;
                 }
-                firebase.database().ref('players').set(players);
-            });
+            }
+            firebase.database().ref('players').set(players);
         }
 
         function redirectToResults() {
