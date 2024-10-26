@@ -54,13 +54,14 @@
     </div>
 
     <script>
-        let players = [];
+        let players = JSON.parse(localStorage.getItem('players')) || [];
         let currentQuestion = 0;
 
         function startGame() {
             const playerName = document.getElementById('playerName').value;
             if (playerName) {
                 players.push({ name: playerName, score: 0 });
+                localStorage.setItem('players', JSON.stringify(players));
                 document.getElementById('registration').classList.add('hidden');
                 document.getElementById('questions').classList.remove('hidden');
                 document.querySelector('.button[onclick="nextQuestion()"]').classList.remove('hidden');
@@ -87,7 +88,7 @@
             for (let i = 0; i < answers.length; i++) {
                 const selected = document.querySelector(`input[name="q${i + 1}"]:checked`);
                 if (selected && selected.value === answers[i]) {
-                    players[0].score++;
+                    players[players.length - 1].score++;
                 }
             }
             localStorage.setItem('players', JSON.stringify(players));
