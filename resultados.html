@@ -41,3 +41,12 @@
             const players = snapshot.val() || [];
             const playerList = document.querySelector('.player-list');
             playerList.innerHTML = '';
+            players.forEach(player => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${player.name}: ${player.score} puntos`;
+                playerList.appendChild(listItem);
+            });
+        });
+    </script>
+</body>
+</html>
