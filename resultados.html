@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resultados Trivia Bíblica</title>
+    <style>
+        body { font-family: 'Arial', sans-serif; background-color: #e9ecef; margin: 0; padding: 0; }
+        .container { max-width: 700px; margin: 50px auto; background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); }
+        h1 { text-align: center; color: #343a40; margin-bottom: 20px; }
+        .player-list { list-style-type: none; padding: 0; }
+        .player-list li { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Resultados Trivia Bíblica</h1>
+        <ul class="player-list">
+            <!-- Aquí se añadirán los resultados dinámicamente -->
+        </ul>
+    </div>
+
+    <script>
+        const players = JSON.parse(localStorage.getItem('players')) || [];
+        const playerList = document.querySelector('.player-list');
+        players.forEach(player => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${player.name}: ${player.score} puntos`;
+            playerList.appendChild(listItem);
+        });
+    </script>
+</body>
+</html>
